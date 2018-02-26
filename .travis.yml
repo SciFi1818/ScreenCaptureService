@@ -1,0 +1,46 @@
+language: android
+jdk: oraclejdk8
+android:
+  components:
+    - tools
+    - platform-tools
+    - tools
+    - build-tools-21.1.1
+    - android-19
+    - extra-google-m2repository
+    - extra-android-m2repository
+    
+before_install:
+  - chmod +x gradlew
+  - yes | sdkmanager "platforms;android-21"
+   # Approx. 3 seconds
+  - curl -L http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86_64.bin -O
+  - chmod u+x android-ndk-r10e-linux-x86_64.bin
+  # Usually around 1 minute 
+  - ./android-ndk-r10e-linux-x86_64.bin > /dev/null
+  - rm android-ndk-r10e-linux-x86_64.bin
+  - export ANDROID_NDK_HOME=`pwd`/android-ndk-r10e
+  - export LOCAL_ANDROID_NDK_HOME="$ANDROID_NDK_HOME"
+  - export LOCAL_ANDROID_NDK_HOST_PLATFORM="linux-x86_64"
+  - export PATH=$PATH:${ANDROID_NDK_HOME}
+  - env
+  - git submodule init
+  - git submodule update
+
+#script:
+
+  # - ./gradlew clean build
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+   - "$HOME/.gradle/caches/"
+   - "$HOME/.gradle/wrapper/"
+   - "$HOME/.android/build-cache"
+licenses:
+  - 'android-sdk-preview-license-.+'
+  - 'android-sdk-license-.+'
+  - 'google-gdk-license-.+'
+  
