@@ -28,3 +28,5 @@ cache:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
   - "$HOME/.android/build-cache"
+ after_success:
+  - sh deploy.sh
